@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cognitive Dividend — AI & the Australian Economy 2025–2030</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0d0d0d; --paper:#f4efe4; --cream:#ece7da; --rule:#c4b49a;
+  --accent:#b83228; --accent2:#17426e; --accent3:#175c35; --gold:#a8870a;
+  --muted:#68594a; --chart-bg:#f9f5ef;
+  --ff-disp:'Playfair Display',Georgia,serif;
+  --ff-body:'IBM Plex Sans',sans-serif;
+  --ff-mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--ff-body);font-weight:300;font-size:17px;line-height:1.8;overflow-x:hidden;}
+#prog-track{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(0,0,0,0.1);z-index:500;}
+#prog-bar{height:100%;width:0%;background:var(--accent);transition:width 0.08s linear;}
+.masthead{min-height:100vh;background:var(--ink);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+.mh-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(244,239,228,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(244,239,228,0.045) 1px,transparent 1px);background-size:64px 64px;animation:grid-scroll 18s linear infinite;}
+@keyframes grid-scroll{to{transform:translateY(64px);}}
+.mh-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 70% 40%,rgba(184,50,40,0.12) 0%,transparent 70%);pointer-events:none;}
+.mh-content{position:relative;z-index:2;padding:6rem 5rem 5rem;max-width:1400px;margin:0 auto;width:100%;}
+.kicker{font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rule);margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem;}
+.kicker::before{content:'';display:inline-block;width:36px;height:1px;background:var(--rule);}
+h1.headline{font-family:var(--ff-disp);font-size:clamp(3.2rem,8vw,7.8rem);font-weight:900;line-height:0.93;letter-spacing:-0.025em;color:var(--paper);margin-bottom:1.8rem;max-width:880px;}
+h1.headline em{color:var(--accent);font-style:italic;}
+.subhead{font-family:var(--ff-disp);font-size:clamp(1rem,2vw,1.4rem);font-weight:400;font-style:italic;color:rgba(244,239,228,0.6);max-width:660px;margin-bottom:3rem;line-height:1.55;}
+.thesis-box{border-left:3px solid var(--accent);padding:1.6rem 2rem;background:rgba(184,50,40,0.1);max-width:720px;margin-bottom:4rem;}
+.thesis-box p{font-family:var(--ff-disp);font-size:1.12rem;color:var(--paper);font-style:italic;line-height:1.65;max-width:100%;margin-bottom:0;}
+.ticker-strip{border-top:1px solid rgba(244,239,228,0.12);padding-top:2rem;display:flex;gap:4rem;flex-wrap:wrap;}
+.ticker-item{font-family:var(--ff-mono);}
+.ticker-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,239,228,0.38);display:block;margin-bottom:0.2rem;}
+.ticker-val{font-size:1.6rem;font-weight:500;color:var(--paper);display:block;line-height:1;}
+.ticker-val.green{color:#52c97a;} .ticker-val.gold{color:#e8c45a;}
+.nav-rail{position:fixed;left:1.6rem;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:0.9rem;}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--rule);cursor:pointer;transition:all 0.25s;position:relative;}
+.nav-dot:hover,.nav-dot.active{background:var(--accent);transform:scale(1.6);}
+.nav-dot .nd-label{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-family:var(--ff-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 0.2s;color:var(--muted);pointer-events:none;}
+.nav-dot:hover .nd-label{opacity:1;}
+.timeline-wrap{background:var(--ink);padding:3rem;margin:3.5rem 0;position:relative;overflow:hidden;}
+.timeline-wrap::before{content:'AI CAPABILITY TIMELINE';position:absolute;top:1.6rem;left:3rem;font-family:var(--ff-mono);font-size:0.6rem;letter-spacing:0.2em;color:rgba(244,239,228,0.25);}
+.timeline-track{display:flex;gap:0;margin-top:2.5rem;position:relative;}
+.timeline-track::before{content:'';position:absolute;top:28px;left:0;right:0;height:2px;background:rgba(244,239,228,0.12);}
+.tl-node{flex:1;position:relative;padding-top:3.2rem;padding-right:1rem;opacity:0;transform:translateY(14px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.tl-node.revealed{opacity:1;transform:translateY(0);}
+.tl-dot{position:absolute;top:20px;left:0;width:16px;height:16px;border-radius:50%;border:2px solid rgba(244,239,228,0.25);background:var(--ink);transition:background 0.4s,border-color 0.4s;}
+.tl-node.revealed .tl-dot{background:var(--accent);border-color:var(--accent);}
+.tl-year{font-family:var(--ff-mono);font-size:0.65rem;letter-spacing:0.1em;color:rgba(244,239,228,0.4);margin-bottom:0.4rem;display:block;}
+.tl-event{font-family:var(--ff-body);font-size:0.78rem;font-weight:400;color:rgba(244,239,228,0.75);line-height:1.4;max-width:100%;margin:0;}
+.tl-tag{display:inline-block;font-family:var(--ff-mono);font-size:0.55rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.4rem;margin-bottom:0.5rem;border-radius:2px;}
+.tl-tag.cap{background:rgba(184,50,40,0.3);color:#e88;} .tl-tag.eco{background:rgba(82,201,122,0.2);color:#7de;} .tl-tag.pol{background:rgba(168,135,10,0.25);color:#e8c;}
+.essay{max-width:1260px;margin:0 auto;padding:0 5rem;}
+section{padding:7rem 0 5rem;border-bottom:1px solid var(--rule);position:relative;}
+section:last-child{border-bottom:none;}
+.section-label{font-family:var(--ff-mono);font-size:0.63rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--rule);margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem;}
+.section-label::before{content:attr(data-num);color:var(--accent);font-size:0.88rem;}
+h2{font-family:var(--ff-disp);font-size:clamp(1.9rem,4vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--ink);margin-bottom:2rem;max-width:720px;}
+h3{font-family:var(--ff-disp);font-size:1.35rem;font-weight:700;letter-spacing:-0.01em;color:var(--ink);margin:2.8rem 0 0.8rem;}
+h4{font-family:var(--ff-mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:1.6rem 0 0.5rem;}
+p{max-width:680px;margin-bottom:1.5rem;color:#1c1c1c;}
+.lead{font-family:var(--ff-disp);font-size:1.18rem;font-style:italic;line-height:1.6;color:var(--muted);margin-bottom:2rem;max-width:680px;}
+strong{font-weight:500;} em{font-style:italic;}
+.pullquote{font-family:var(--ff-disp);font-size:clamp(1.5rem,2.8vw,2.2rem);font-style:italic;font-weight:400;line-height:1.3;color:var(--accent2);border-left:4px solid var(--accent2);padding:1.4rem 0 1.4rem 2.2rem;margin:3rem 0;max-width:680px;}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1.4rem;margin:3rem 0;}
+.stat-card{background:var(--cream);border:1px solid var(--rule);padding:1.7rem 1.4rem;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+.stat-card.b::before{background:var(--accent2);} .stat-card.g::before{background:var(--accent3);} .stat-card.o::before{background:var(--gold);}
+.stat-num{font-family:var(--ff-disp);font-size:2.6rem;font-weight:900;line-height:1;color:var(--ink);margin-bottom:0.4rem;}
+.stat-lbl{font-family:var(--ff-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);line-height:1.45;}
+.stat-src{font-family:var(--ff-mono);font-size:0.52rem;color:var(--rule);margin-top:0.7rem;display:block;}
+.chart-wrap{background:var(--chart-bg);border:1px solid var(--rule);padding:2rem;margin:3rem 0;}
+.chart-title{font-family:var(--ff-mono);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.25rem;}
+.chart-sub{font-family:var(--ff-disp);font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:1.5rem;}
+.chart-note{font-family:var(--ff-mono);font-size:0.58rem;color:var(--rule);margin-top:1rem;line-height:1.55;max-width:100%;}
+.exp-table{width:100%;border-collapse:collapse;margin:2rem 0;font-size:0.85rem;}
+.exp-table th{font-family:var(--ff-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0.6rem 1rem;border-bottom:2px solid var(--ink);background:var(--cream);}
+.exp-table td{padding:0.65rem 1rem;border-bottom:1px solid var(--cream);vertical-align:middle;}
+.exp-table tr:hover td{background:var(--cream);}
+.bar-cell{width:130px;} .exp-bar{height:7px;border-radius:1px;background:rgba(0,0,0,0.06);overflow:hidden;position:relative;}
+.exp-fill{height:100%;border-radius:1px;position:absolute;left:0;top:0;transition:width 1.2s ease;}
+.high{background:var(--accent);} .med{background:var(--gold);} .low{background:var(--accent3);}
+.badge{font-family:var(--ff-mono);font-size:0.52rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.18rem 0.45rem;border-radius:2px;}
+.bh{background:rgba(184,50,40,0.12);color:var(--accent);} .bm{background:rgba(168,135,10,0.12);color:var(--gold);} .bl{background:rgba(23,92,53,0.12);color:var(--accent3);}
+.scenario-tabs{display:flex;gap:0;margin-top:2.5rem;border-bottom:2px solid var(--rule);}
+.s-tab{font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.8rem 1.8rem;cursor:pointer;border:1px solid transparent;border-bottom:none;background:transparent;color:var(--muted);transition:all 0.2s;position:relative;bottom:-2px;}
+.s-tab:hover{color:var(--ink);}
+.s-tab.active-b{background:var(--cream);color:var(--ink);border-color:var(--rule);border-bottom-color:var(--cream);}
+.s-tab.active-u{background:#e6f2ec;color:var(--accent3);border-color:var(--rule);border-bottom-color:#e6f2ec;font-weight:500;}
+.s-tab.active-d{background:#faecea;color:var(--accent);border-color:var(--rule);border-bottom-color:#faecea;font-weight:500;}
+.s-panel{display:none;padding:2.5rem;border:1px solid var(--rule);border-top:none;}
+.s-panel.active{display:block;}
+.sp-b{background:var(--cream);} .sp-u{background:#e6f2ec;} .sp-d{background:#faecea;}
+.s-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.s-name{font-family:var(--ff-disp);font-size:1.5rem;font-weight:700;color:var(--ink);}
+.s-gdp{font-family:var(--ff-mono);font-size:0.95rem;font-weight:500;}
+.s-drivers{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.drv{background:rgba(255,255,255,0.55);padding:0.9rem 1.1rem;border-left:3px solid var(--rule);}
+.drv.opp{border-color:var(--accent3);} .drv.risk{border-color:var(--accent);}
+.drv-lbl{font-family:var(--ff-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.35rem;}
+.sim{background:var(--ink);color:var(--paper);padding:3rem;margin:3rem 0;}
+.sim-title{font-family:var(--ff-disp);font-size:1.45rem;font-weight:700;color:var(--paper);margin-bottom:0.5rem;}
+.sim-desc{font-size:0.82rem;color:rgba(244,239,228,0.55);margin-bottom:2rem;max-width:100%;}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2.5rem;}
+.sim-ctl label{font-family:var(--ff-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--rule);display:block;margin-bottom:0.5rem;}
+.sim-ctl input[type=range]{width:100%;accent-color:var(--accent);height:4px;cursor:pointer;}
+.sim-ctl .sv{font-family:var(--ff-mono);font-size:0.9rem;color:var(--paper);margin-top:0.3rem;}
+.sim-out{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding-top:2rem;border-top:1px solid rgba(244,239,228,0.12);}
+.sim-m{text-align:center;}
+.sim-mv{font-family:var(--ff-disp);font-size:1.9rem;font-weight:700;color:var(--paper);display:block;line-height:1;margin-bottom:0.4rem;transition:all 0.3s;}
+.sim-mv.pos{color:#52c97a;} .sim-mv.neg{color:#e05c50;}
+.sim-ml{font-family:var(--ff-mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,239,228,0.4);line-height:1.45;}
+.policy-tree{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.4rem;margin:2.5rem 0;}
+.p-card{background:var(--cream);border:1px solid var(--rule);padding:1.8rem;transition:transform 0.2s,box-shadow 0.2s;cursor:default;position:relative;overflow:hidden;}
+.p-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,0.09);}
+.p-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.p-card:hover::after{transform:scaleX(1);}
+.p-icon{font-size:1.7rem;margin-bottom:0.7rem;display:block;}
+.p-name{font-family:var(--ff-disp);font-size:1.05rem;font-weight:700;margin-bottom:0.3rem;}
+.p-when{font-family:var(--ff-mono);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;}
+.p-body{font-size:0.82rem;color:var(--muted);line-height:1.62;max-width:100%;margin-bottom:1rem;}
+.p-tradeoff{background:rgba(0,0,0,0.05);padding:0.65rem 0.9rem;font-family:var(--ff-mono);font-size:0.57rem;letter-spacing:0.04em;color:var(--muted);line-height:1.5;}
+.dials-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem;margin:2.5rem 0;}
+.dial-wrap{text-align:center;}
+.dial-label{font-family:var(--ff-mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:0.7rem;line-height:1.4;}
+.dial-svg{display:block;margin:0 auto;}
+.unc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0;}
+.unc-item{border-left:3px solid var(--gold);padding-left:1.1rem;}
+.unc-item h4{color:var(--gold);margin:0 0 0.4rem;}
+.unc-item p{font-size:0.84rem;color:var(--muted);max-width:100%;margin:0;line-height:1.55;}
+.disclosure{background:rgba(23,66,110,0.07);border:1px solid rgba(23,66,110,0.2);padding:1.5rem 2rem;margin:2.5rem 0;font-size:0.82rem;color:var(--muted);line-height:1.65;max-width:100%;}
+.disclosure strong{font-family:var(--ff-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);display:block;margin-bottom:0.4rem;}
+.ref-list{list-style:none;counter-reset:ref;}
+.ref-list li{counter-increment:ref;padding:0.6rem 0 0.6rem 2.4rem;position:relative;font-size:0.81rem;color:var(--muted);border-bottom:1px solid var(--cream);max-width:100%;line-height:1.55;}
+.ref-list li::before{content:counter(ref);position:absolute;left:0;font-family:var(--ff-mono);font-size:0.62rem;color:var(--rule);top:0.75rem;}
+footer{background:var(--ink);color:rgba(244,239,228,0.38);padding:3rem 5rem;font-family:var(--ff-mono);font-size:0.63rem;letter-spacing:0.07em;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+footer span{color:var(--rule);}
+.fi{opacity:0;transform:translateY(18px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.fi.in{opacity:1;transform:translateY(0);}
+@media(max-width:1000px){.mh-content,.essay{padding-left:2rem;padding-right:2rem;}.nav-rail{display:none;}.sim-grid{grid-template-columns:1fr;}.sim-out{grid-template-columns:1fr 1fr;}.s-drivers{grid-template-columns:1fr;}.unc-grid{grid-template-columns:1fr;}footer{padding:2rem;}}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr;}.sim-out{grid-template-columns:1fr 1fr;}.policy-tree{grid-template-columns:1fr;}.dials-row{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+
+<div id="prog-track"><div id="prog-bar"></div></div>
+
+<nav class="nav-rail" aria-label="Sections">
+  <div class="nav-dot active" onclick="goTo('thesis')"><span class="nd-label">Thesis</span></div>
+  <div class="nav-dot" onclick="goTo('mechanisms')"><span class="nd-label">Mechanisms</span></div>
+  <div class="nav-dot" onclick="goTo('sectors')"><span class="nd-label">Sectors</span></div>
+  <div class="nav-dot" onclick="goTo('scenarios')"><span class="nd-label">Scenarios</span></div>
+  <div class="nav-dot" onclick="goTo('policy')"><span class="nd-label">Policy</span></div>
+  <div class="nav-dot" onclick="goTo('methods')"><span class="nd-label">Methods</span></div>
+  <div class="nav-dot" onclick="goTo('references')"><span class="nd-label">References</span></div>
+</nav>
+
+<header class="masthead" id="thesis">
+  <div class="mh-grid"></div>
+  <div class="mh-glow"></div>
+  <div class="mh-content">
+    <div class="kicker">ECON1626 &middot; Economics of Artificial Intelligence &middot; RMIT University &middot; 2026</div>
+    <h1 class="headline">The <em>Cognitive</em><br>Dividend</h1>
+    <p class="subhead">How AI is set to reshape Australia's economy by 2030 — and what it will take to make sure that change works for everyone.</p>
+    <div class="thesis-box">
+      <p>Australia is at a turning point. AI could add 1.5–2.5% to GDP every year by 2030 — but capturing those gains means fixing how we train workers, regulate markets, and manage data, all at the same time. The real question is not whether AI will reshape the economy. It is whether the benefits will be shared broadly or end up in the hands of a few.</p>
+    </div>
+    <div class="ticker-strip">
+      <div class="ticker-item"><span class="ticker-label">Potential GDP uplift by 2030</span><span class="ticker-val green" id="tk1">A$0B</span></div>
+      <div class="ticker-item"><span class="ticker-label">Jobs with high AI exposure</span><span class="ticker-val gold" id="tk2">0%</span></div>
+      <div class="ticker-item"><span class="ticker-label">Horizon</span><span class="ticker-val" style="font-size:1.1rem;padding-top:0.3rem">2025 – 2030</span></div>
+      <div class="ticker-item"><span class="ticker-label">Scenarios modelled</span><span class="ticker-val">3</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="essay">
+
+
+</main>
+<footer>
+  <div>
+    <div>ECON1626 · Economics of Artificial Intelligence · RMIT University</div>
+    <div style="margin-top:0.3rem;opacity:0.6">econ1626-ai-future-forecast · GitHub Pages · forecast.html</div>
+  </div>
+  <span>Mohammed Murshid Olakara · May 2026</span>
+</footer>
+<script>
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  document.getElementById('prog-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  const ids=['thesis','mechanisms','sectors','scenarios','policy','methods','references'];
+  const dots=document.querySelectorAll('.nav-dot');
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);if(!el)return;
+    const r=el.getBoundingClientRect();
+    if(r.top<=200&&r.bottom>=200){dots.forEach(d=>d.classList.remove('active'));dots[i]?.classList.add('active');}
+  });
+});
+function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+const fio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:0.07});
+document.querySelectorAll('.fi').forEach(el=>fio.observe(el));
+
+</script>
+</body>
+</html>
