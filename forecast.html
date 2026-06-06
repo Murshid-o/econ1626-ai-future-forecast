@@ -331,6 +331,73 @@ footer span{color:var(--rule);}
   </div>
 </div>
  
+<div class="chart-wrap fi">
+  <div class="chart-title">Fig. 3 — Scenario GDP Trajectories</div>
+  <div class="chart-sub">Projected cumulative productivity uplift (% above baseline trend), 2025–2030</div>
+  <canvas id="scenarioChart" height="290"></canvas>
+  <div class="chart-note">Baseline trend = RBA medium-term productivity growth of 1.1% pa. Shaded bands = structural uncertainty range (±0.3pp).</div>
+</div>
+</section>
+ 
+<!-- §04 POLICY -->
+<section id="policy">
+<div class="section-label fi" data-num="04">Policy Playbook</div>
+<h2 class="fi">What to do, when, with whom — and what could go wrong</h2>
+ 
+<p class="lead fi">There is no single policy that fixes this. What is needed is a set of well-timed interventions that build up Australia's capacity to manage the transition before the disruption hits its peak.</p>
+ 
+<p class="fi">The biggest risk is a <strong>timing mismatch</strong>. AI moves fast — capabilities shift every six to eighteen months. But government programs and regulations take four to eight years to develop and pass. Someone who loses their job in 2026 cannot wait until 2028 for a new TAFE course to be designed. And a startup that cannot get regulatory clarity will simply move to Singapore instead. Policy needs to move much faster than it normally does.</p>
+ 
+<div class="policy-tree">
+  <div class="p-card fi">
+    <span class="p-icon">🎓</span>
+    <div class="p-name">National AI Skills Compact</div>
+    <div class="p-when">Immediate · 2025–2027</div>
+    <div class="p-body">Build short-course programs at TAFEs and universities focused on skills that work alongside AI: understanding data, using AI tools effectively, and navigating AI governance. Aim for 300,000 completions by 2027, with businesses contributing through a levy system.</div>
+    <div class="p-tradeoff">⚖ The cost is around A$2.4B upfront — but doing nothing risks far higher costs in unemployment support. Success measure: 65% of displaced workers back in comparable jobs within 24 months.</div>
+  </div>
+  <div class="p-card fi">
+    <span class="p-icon">💸</span>
+    <div class="p-name">SME AI Adoption Tax Credit</div>
+    <div class="p-when">Immediate · 2025–2026</div>
+    <div class="p-body">Give small businesses a 30% tax credit when they invest in AI tools — but only if they also invest in training their staff. The credit expires after four years so it does not become a permanent handout. Based on a model that has already worked in New Zealand.</div>
+    <div class="p-tradeoff">⚖ Costs about A$800M a year in foregone tax revenue, but is estimated to generate A$3.2B in extra SME output. Target: AI adoption among small businesses reaches 65% by 2028, up from 34% today.</div>
+  </div>
+  <div class="p-card fi">
+    <span class="p-icon">🔓</span>
+    <div class="p-name">Open Government Data Framework</div>
+    <div class="p-when">Near-term · 2025–2027</div>
+    <div class="p-body">Make government data — health records, transport data, census information — openly available through standard digital access points. Partner with CSIRO and universities to use this data to build world-class AI tools in areas where Australia has a natural advantage, like healthcare and resources.</div>
+    <div class="p-tradeoff">⚖ Requires careful handling of privacy and strong coordination across government agencies. Target: 500 high-quality datasets made available digitally by 2027, up from around 80 today.</div>
+  </div>
+  <div class="p-card fi">
+    <span class="p-icon">⚖️</span>
+    <div class="p-name">Adaptive AI Regulation</div>
+    <div class="p-when">Near-term · 2026–2028</div>
+    <div class="p-body">Create a regulation system where the rules are proportionate to the risk — stricter for high-stakes AI like medical tools, lighter for low-risk applications. Set up an office that can let new AI products be tested safely before full approval. Speed up the process for getting diagnostic AI cleared by the TGA.</div>
+    <div class="p-tradeoff">⚖ Clear rules encourage investment, but set them too early and they may not age well. Target: approvals within 9 months for low-risk AI and 18 months for high-risk medical applications.</div>
+  </div>
+  <div class="p-card fi">
+    <span class="p-icon">🌏</span>
+    <div class="p-name">Indo-Pacific AI Trade Strategy</div>
+    <div class="p-when">Medium-term · 2027–2030</div>
+    <div class="p-body">Build Australia's reputation as a safe, trustworthy provider of AI for the region — particularly in health and resources. Sign data-sharing deals with Singapore, Japan, and South Korea. Australia's commitment to data privacy is an asset in a region wary of relying on either the US or China.</div>
+    <div class="p-tradeoff">⚖ Navigating geopolitics is difficult, and Australia needs a mature domestic AI industry to export from. Target: AI exports grow from 2% to 8% of total services exports by 2030.</div>
+  </div>
+  <div class="p-card fi">
+    <span class="p-icon">📋</span>
+    <div class="p-name">AI-Aware Bargaining Framework</div>
+    <div class="p-when">Medium-term · 2026–2029</div>
+    <div class="p-body">Change workplace laws so companies have to assess the impact on workers before rolling out major AI changes. Trial agreements where businesses share the productivity gains with their employees. Fix the grey area around gig workers who power AI-adjacent platforms but miss out on basic protections.</div>
+    <div class="p-tradeoff">⚖ If designed badly, this could discourage businesses from adopting AI at all. Target: workers' share of income in AI-heavy industries stays within 2 percentage points of today's level by 2030.</div>
+  </div>
+</div>
+ 
+<h3 class="fi">Unintended Consequences</h3>
+ 
+<p class="fi">Even good policies can backfire. Teaching people generic AI skills may not match what employers actually need in specific industries. A tax credit that does not require businesses to also train their workers could end up paying companies to automate jobs without actually making them more productive.</p>
+ 
+<p class="fi">The most serious risk is <strong>regulatory arbitrage</strong>. If Australia's rules are stricter than those in Singapore or the US, companies will simply run their AI systems from overseas — still affecting Australian workers, but paying tax somewhere else. The answer is not lighter rules, but smarter ones: regulations that include built-in expiry dates and regular reviews so they can keep up with a fast-moving industry.</p>
 </section>
  
  
@@ -374,12 +441,6 @@ new Chart(document.getElementById('channelChart'),{type:'bar',data:{labels:['Tas
  
 new Chart(document.getElementById('bubbleChart'),{type:'bubble',data:{datasets:[{label:'Financial Services',data:[{x:82,y:3.2,r:17}],backgroundColor:'rgba(184,50,40,0.22)',borderColor:C.red,borderWidth:2},{label:'Legal & Professional',data:[{x:78,y:-2.4,r:13}],backgroundColor:'rgba(184,50,40,0.18)',borderColor:C.red,borderWidth:2},{label:'Healthcare',data:[{x:60,y:4.8,r:19}],backgroundColor:'rgba(23,92,53,0.22)',borderColor:C.green,borderWidth:2},{label:'Education',data:[{x:55,y:0.8,r:11}],backgroundColor:'rgba(168,135,10,0.2)',borderColor:C.gold,borderWidth:2},{label:'Mining & Resources',data:[{x:45,y:5.4,r:15}],backgroundColor:'rgba(23,92,53,0.28)',borderColor:C.green,borderWidth:2},{label:'Retail & Hospitality',data:[{x:50,y:-1.2,r:21}],backgroundColor:'rgba(122,143,158,0.2)',borderColor:C.muted,borderWidth:1},{label:'Construction',data:[{x:28,y:1.1,r:14}],backgroundColor:'rgba(168,135,10,0.18)',borderColor:C.gold,borderWidth:1},{label:'Aged Care',data:[{x:18,y:0.5,r:12}],backgroundColor:'rgba(23,92,53,0.18)',borderColor:C.green,borderWidth:1}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.x}% exposure, ${c.parsed.y>=0?'+':''}${c.parsed.y}% wage`}}},scales:{x:{min:0,max:100,title:{display:true,text:'AI Task Overlap (%)'},grid:{color:'rgba(196,180,154,0.3)'}},y:{title:{display:true,text:'Projected Real Wage Change (%, 2025–2030)'},grid:{color:'rgba(196,180,154,0.3)'},ticks:{callback:v=>(v>=0?'+':'')+v+'%'}}}}});
 setTimeout(()=>{document.querySelectorAll('.exp-fill[data-w]').forEach(el=>{el.style.width=el.dataset.w;});},500);
- 
-function showS(s){
-  ['b','u','d'].forEach(k=>{document.getElementById('sp-'+k).style.display='none';document.getElementById('sp-'+k).classList.remove('active');});
-  document.getElementById('sp-'+s).style.display='block';document.getElementById('sp-'+s).classList.add('active');
-  const tabs=document.querySelectorAll('.s-tab');tabs.forEach(t=>t.className='s-tab');
-  const idx={b:0,u:1,d:2}[s];const cls={b:'active-b',u:'active-u',d:'active-d'}[s];tabs[idx].classList.add(cls);
 
 function showS(s){
   ['b','u','d'].forEach(k=>{document.getElementById('sp-'+k).style.display='none';document.getElementById('sp-'+k).classList.remove('active');});
