@@ -380,7 +380,30 @@ function showS(s){
   document.getElementById('sp-'+s).style.display='block';document.getElementById('sp-'+s).classList.add('active');
   const tabs=document.querySelectorAll('.s-tab');tabs.forEach(t=>t.className='s-tab');
   const idx={b:0,u:1,d:2}[s];const cls={b:'active-b',u:'active-u',d:'active-d'}[s];tabs[idx].classList.add(cls);
+
+function showS(s){
+  ['b','u','d'].forEach(k=>{document.getElementById('sp-'+k).style.display='none';document.getElementById('sp-'+k).classList.remove('active');});
+  document.getElementById('sp-'+s).style.display='block';document.getElementById('sp-'+s).classList.add('active');
+  const tabs=document.querySelectorAll('.s-tab');tabs.forEach(t=>t.className='s-tab');
+  const idx={b:0,u:1,d:2}[s];const cls={b:'active-b',u:'active-u',d:'active-d'}[s];tabs[idx].classList.add(cls);
 }
+ 
+function runSim(){
+  const a=+document.getElementById('sAdopt').value,sk=+document.getElementById('sSkills').value,r=+document.getElementById('sReg').value,dt=+document.getElementById('sData').value;
+  document.getElementById('vAdopt').textContent=a+'%';document.getElementById('vSkills').textContent=sk+'%';document.getElementById('vReg').textContent=r+' / 10';document.getElementById('vData').textContent=dt+' / 10';
+  const gdp=+(0.3+(a/100)*0.9+(r/10)*0.5+(dt/10)*0.35).toFixed(2);
+  const jobs=+(-(a/100)*8+(sk/100)*5.5+(r/10)*0.8).toFixed(1);
+  const gini=+(6-(sk/100)*5-(r/10)*1.5-(dt/10)*0.8).toFixed(1);
+  const fiscal=+((gdp*18)-(sk/100)*22+(dt/10)*4).toFixed(0);
+  const set=(id,val,fmt,pos)=>{const el=document.getElementById(id);el.textContent=fmt(val);el.className='sim-mv '+(pos(val)?'pos':'neg');};
+  set('mGDP',gdp,v=>'+'+v+'%',v=>v>0);set('mJobs',jobs,v=>(v>=0?'+':'')+v+'%',v=>v>=0);
+  set('mGini',gini,v=>(v>=0?'+':'')+v,v=>v<=1.5);set('mFisc',fiscal,v=>(v>=0?'+':'')+' A$'+Math.abs(v)+'B',v=>v>=0);
+}
+runSim();
+const yrs=[2025,2026,2027,2028,2029,2030];
+const upB=[0.2,0.55,1.05,1.72,2.45,3.28],midB=[0.1,0.28,0.52,0.84,1.18,1.52],dnB=[0.05,0.1,0.18,0.28,0.38,0.50];
+function fan(base,hi,lo,color,label){return[{label:label+' (upper)',data:base.map(v=>+(v*hi).toFixed(2)),borderColor:color,borderDash:[4,3],borderWidth:1,pointRadius:0,fill:false,tension:0.4},{label:label+' (mid)',data:base,borderColor:color,borderWidth:2.5,pointRadius:4,fill:false,tension:0.4},{label:label+' (lower)',data:base.map(v=>+(v*lo).toFixed(2)),borderColor:color,borderDash:[4,3],borderWidth:1,pointRadius:0,fill:'-1',backgroundColor:color.replace('rgb','rgba').replace(')',',0.08)'),tension:0.4}];}
+new Chart(document.getElementById('scenarioChart'),{type:'line',data:{labels:yrs,datasets:[...fan(upB,1.3,0.7,'rgb(23,92,53)','Upside'),...fan(midB,1.25,0.75,'rgb(23,66,110)','Baseline'),...fan(dnB,1.4,0.6,'rgb(184,50,40)','Downside')]},options:{responsive:true,plugins:{legend:{labels:{filter:i=>!i.text.includes('upper')&&!i.text.includes('lower'),boxWidth:14,font:{size:11},padding:14}},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{color:'rgba(196,180,154,0.25)'}},y:{title:{display:true,text:'Cumulative GDP uplift (% above baseline trend)'},grid:{color:'rgba(196,180,154,0.3)'},ticks:{callback:v=>'+'+v+'%'}}}}});
  
 </script>
 </body>
