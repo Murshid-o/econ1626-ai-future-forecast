@@ -400,6 +400,38 @@ footer span{color:var(--rule);}
 <p class="fi">The most serious risk is <strong>regulatory arbitrage</strong>. If Australia's rules are stricter than those in Singapore or the US, companies will simply run their AI systems from overseas — still affecting Australian workers, but paying tax somewhere else. The answer is not lighter rules, but smarter ones: regulations that include built-in expiry dates and regular reviews so they can keep up with a fast-moving industry.</p>
 </section>
  
+<!-- §05 METHODS -->
+<section id="methods">
+<div class="section-label fi" data-num="05">Methods, Data &amp; Uncertainty</div>
+<h2 class="fi">How this forecast was built — and what it cannot see</h2>
+ 
+<p class="lead fi">Any honest forecast has to acknowledge what it cannot know. This one is no different. There are six areas where the uncertainty is significant enough to affect the conclusions.</p>
+ 
+<div class="unc-grid fi">
+  <div class="unc-item"><h4>Model Uncertainty</h4><p>The models used to estimate which jobs are at risk from AI are based on what AI can do today. But AI keeps improving quickly — what seemed safe 18 months ago may already be automated. These models almost certainly understate how exposed jobs will be in the future.</p></div>
+  <div class="unc-item"><h4>Adoption Uncertainty</h4><p>Not every business will adopt AI at the same pace — it depends a lot on the quality of leadership and how well-run the organisation is. Businesses that hold off for too long may find themselves permanently behind, as the companies that moved early build up advantages that are hard to catch up with.</p></div>
+  <div class="unc-item"><h4>Measurement Gaps</h4><p>Official statistics from the ABS are always 1–2 years behind, and they often miss improvements in quality rather than quantity. This means the benefits of AI may already be showing up in workplaces but not yet in the numbers — a pattern that happened with computers in the 1990s too.</p></div>
+  <div class="unc-item"><h4>Structural Break Risk</h4><p>All three scenarios assume nothing catastrophic happens. A major AI safety failure, a technology split between the US and China, or a dramatic political shift in Australia could each completely change the picture in ways this forecast cannot predict.</p></div>
+  <div class="unc-item"><h4>Distributional Data Gaps</h4><p>There is very little Australian-specific research on who will win and who will lose from AI. Most studies use data from the US and apply it here — but Australia has a bigger services sector and very different workplace laws, which means the US findings may not translate well.</p></div>
+  <div class="unc-item"><h4>General Equilibrium Effects</h4><p>This forecast looks at each channel in isolation. In reality, changes in one part of the economy ripple through to others — lower costs in financial services affect what small businesses pay for loans, and so on. Those second-order effects are not modelled here, and they could make the overall impact either much bigger or much smaller.</p></div>
+</div>
+ 
+<h3 class="fi">Forecast Confidence by Dimension</h3>
+<div class="dials-row fi" id="dialsRow"></div>
+ 
+<div class="disclosure fi">
+  <strong>AI Tooling Disclosure</strong>
+  This essay was written with help from Anthropic Claude and Google Gemini. These tools were used to review literature, map economic mechanisms, test scenarios, analyse policy trade-offs, and develop visualisation logic. All numbers and estimates come from the cited sources listed in the references section. The interactive charts were built using Chart.js.
+</div>
+ 
+<div class="chart-wrap fi">
+  <div class="chart-title">Fig. 4 — Forecast Uncertainty Fan</div>
+  <div class="chart-sub">Scenario confidence intervals: cumulative GDP uplift (% above baseline trend), 2025–2030</div>
+  <canvas id="fanChart" height="270"></canvas>
+  <div class="chart-note">Shaded bands = interquartile range. Dashed lines = 10th/90th percentile. By 2027–28 scenarios diverge beyond structural uncertainty range, making early policy signals decisive.</div>
+</div>
+</section>
+ 
  
 </main>
 <footer>
@@ -465,6 +497,18 @@ const yrs=[2025,2026,2027,2028,2029,2030];
 const upB=[0.2,0.55,1.05,1.72,2.45,3.28],midB=[0.1,0.28,0.52,0.84,1.18,1.52],dnB=[0.05,0.1,0.18,0.28,0.38,0.50];
 function fan(base,hi,lo,color,label){return[{label:label+' (upper)',data:base.map(v=>+(v*hi).toFixed(2)),borderColor:color,borderDash:[4,3],borderWidth:1,pointRadius:0,fill:false,tension:0.4},{label:label+' (mid)',data:base,borderColor:color,borderWidth:2.5,pointRadius:4,fill:false,tension:0.4},{label:label+' (lower)',data:base.map(v=>+(v*lo).toFixed(2)),borderColor:color,borderDash:[4,3],borderWidth:1,pointRadius:0,fill:'-1',backgroundColor:color.replace('rgb','rgba').replace(')',',0.08)'),tension:0.4}];}
 new Chart(document.getElementById('scenarioChart'),{type:'line',data:{labels:yrs,datasets:[...fan(upB,1.3,0.7,'rgb(23,92,53)','Upside'),...fan(midB,1.25,0.75,'rgb(23,66,110)','Baseline'),...fan(dnB,1.4,0.6,'rgb(184,50,40)','Downside')]},options:{responsive:true,plugins:{legend:{labels:{filter:i=>!i.text.includes('upper')&&!i.text.includes('lower'),boxWidth:14,font:{size:11},padding:14}},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{color:'rgba(196,180,154,0.25)'}},y:{title:{display:true,text:'Cumulative GDP uplift (% above baseline trend)'},grid:{color:'rgba(196,180,154,0.3)'},ticks:{callback:v=>'+'+v+'%'}}}}});
+ 
+const dialData=[{label:'GDP Magnitude',conf:0.55,color:'#b7950b'},{label:'Adoption Speed',conf:0.35,color:'#b83228'},{label:'Sector Impacts',conf:0.65,color:'#17426e'},{label:'Policy Efficacy',conf:0.40,color:'#b83228'},{label:'Labour Market',conf:0.45,color:'#b7950b'},{label:'Distribution',conf:0.30,color:'#b83228'}];
+function makeDial(conf,color,size=110){
+  const r=38,cx=55,cy=55,angle=conf*Math.PI,sA=Math.PI,eA=Math.PI+angle;
+  const x1=cx+r*Math.cos(sA),y1=cy+r*Math.sin(sA),x2=cx+r*Math.cos(eA),y2=cy+r*Math.sin(eA),large=angle>Math.PI?1:0;
+  const track=`M ${cx-r} ${cy} A ${r} ${r} 0 1 1 ${cx+r} ${cy}`;const fill=`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
+  return `<svg class="dial-svg" viewBox="0 0 110 70" width="${size}" height="${size*70/110}"><path d="${track}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="8" stroke-linecap="round"/><path d="${fill}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round"/><text x="55" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#0d0d0d">${Math.round(conf*100)}%</text><text x="55" y="64" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#68594a">confidence</text></svg>`;
+}
+const dr=document.getElementById('dialsRow');
+if(dr){dialData.forEach(d=>{dr.innerHTML+=`<div class="dial-wrap">${makeDial(d.conf,d.color)}<div class="dial-label">${d.label}</div></div>`;});}
+ 
+new Chart(document.getElementById('fanChart'),{type:'line',data:{labels:yrs,datasets:[{label:'Upside P90',data:upB.map(v=>+(v*1.45).toFixed(2)),borderColor:'rgba(23,92,53,0.28)',fill:false,borderDash:[3,3],pointRadius:0,tension:0.4,borderWidth:1},{label:'Upside P50',data:upB,borderColor:'rgb(23,92,53)',fill:false,borderWidth:2.5,pointRadius:3,tension:0.4},{label:'Upside P10',data:upB.map(v=>+(v*0.6).toFixed(2)),borderColor:'rgba(23,92,53,0.28)',fill:'-1',backgroundColor:'rgba(23,92,53,0.07)',borderDash:[3,3],pointRadius:0,tension:0.4,borderWidth:1},{label:'Baseline P50',data:midB,borderColor:'rgb(23,66,110)',fill:false,borderWidth:2.5,pointRadius:3,tension:0.4},{label:'Downside P50',data:dnB,borderColor:'rgb(184,50,40)',fill:false,borderWidth:2.5,pointRadius:3,tension:0.4},{label:'Downside P10',data:dnB.map(v=>Math.max(0,v*0.4)),borderColor:'rgba(184,50,40,0.25)',fill:'-1',backgroundColor:'rgba(184,50,40,0.07)',borderDash:[3,3],pointRadius:0,tension:0.4,borderWidth:1}]},options:{responsive:true,plugins:{legend:{labels:{filter:i=>['Upside P50','Baseline P50','Downside P50'].includes(i.text),boxWidth:14,font:{size:11},padding:14}}},scales:{x:{grid:{color:'rgba(196,180,154,0.25)'}},y:{min:0,title:{display:true,text:'Cumulative GDP uplift above trend (%)'},grid:{color:'rgba(196,180,154,0.3)'},ticks:{callback:v=>'+'+v.toFixed(1)+'%'}}}}});
  
 </script>
 </body>
