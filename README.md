@@ -1,5 +1,3 @@
-# econ1626-ai-future-forecast
-
 ## The Cognitive Dividend: AI and the Australian Economy, 2025–2030
 An interactive web essay arguing how AI will reshape Australia's economy by 2030 — combining original analysis, data visualisations, and policy scenario modelling.
 
